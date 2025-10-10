@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    internal class Plan : BaseModel
+    public class Plan : BaseModel
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;

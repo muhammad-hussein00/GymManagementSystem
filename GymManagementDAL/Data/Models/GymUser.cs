@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    internal abstract class GymUser : BaseModel
+    public abstract class GymUser : BaseModel
     {
         public string Name { get; set; } = null!;
         public DateOnly DateOfBirth { get; set; }

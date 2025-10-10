@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    internal class Trainer : GymUser
+    public class Trainer : GymUser
     {
         public Specialty Specialty { get; set; }
 

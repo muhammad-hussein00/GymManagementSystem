@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    internal abstract class BaseModel
+    public abstract class BaseModel
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
