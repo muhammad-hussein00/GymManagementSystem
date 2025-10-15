@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Data.Contexts
 {
-    internal class GymContext : DbContext
+    public class GymContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GymContext(DbContextOptions<GymContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer("server = .; Database = GymManagement; Trusted_Connection = true; TrustServerCertificate = true");
+    
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
