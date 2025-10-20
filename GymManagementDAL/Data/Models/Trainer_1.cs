@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    public class Member : GymUser
+    public class Trainer : GymUser
     {
         //JoinDate == CreatedAt of basemodel
         public string? Photo { get; set; }

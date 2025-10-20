@@ -9,7 +9,7 @@ namespace GymManagementDAL.Models
     public class MemberPlan : BaseModel
     {
         public int MemberId { get; set; }
-        public Member Member { get; set; } = null!;
+        public Trainer Member { get; set; } = null!;
         public int PlanId { get; set; }
         public Plan Plan { get; set; } = null!;
         public DateTime EndDate { get; set; }

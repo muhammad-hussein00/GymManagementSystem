@@ -16,10 +16,16 @@ namespace GymManagementDAL.UnitOfWork
         private readonly Dictionary<Type, Object> _Repositories = new();
         private readonly GymContext _context;
 
-        public UnitOfWork(GymContext context)
+        public UnitOfWork(GymContext context, ITrainerRepository trainerRepository, ISessionRepository sessionRepository)
         {
             this._context = context;
+            TrainerRepository = trainerRepository;
+            SessionRepository = sessionRepository;
         }
+
+        public ITrainerRepository TrainerRepository { get; }
+
+        public ISessionRepository SessionRepository {  get; }
 
         public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseModel, new()
         {
