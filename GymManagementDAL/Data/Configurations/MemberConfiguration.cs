@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Configurations
 {
-    internal class MemberConfiguration : GymUserConfiguration<Member>, IEntityTypeConfiguration<Member>
+    internal class MemberConfiguration : GymUserConfiguration<Trainer>, IEntityTypeConfiguration<Trainer>
     {
-        public new void Configure(EntityTypeBuilder<Member> builder)
+        public new void Configure(EntityTypeBuilder<Trainer> builder)
         {
             builder.Property(T => T.CreatedAt)
                    .HasColumnName("JoinDate")
