@@ -50,10 +50,10 @@ namespace GymManagementBLL.Services.Classes
                 IsActive = plan.IsActive,
             };
         }
-        public UpdatePlanViewModel? GetPlanToUpdate(int planId)
+        public UpdatePlanViewModel? GetPlanToUpdate(int planId)////////////////////////////////////////////////////////////
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(planId);
-            if(plan is null || HasActiveMemberPlan(pl)) return null;
+            if(plan is null || HasActiveMemberPlan(planId)) return null;
 
             return new UpdatePlanViewModel()
             {

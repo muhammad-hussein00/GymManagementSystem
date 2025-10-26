@@ -1,4 +1,5 @@
-﻿using GymManagementDAL.Models;
+﻿using GymManagementDAL.Data.Models;
+using GymManagementDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace GymManagementDAL.Data.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         #region DbSets
-        public DbSet<Trainer> Members { get; set; }
+        public DbSet<Member> Members { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<HealthRecord> HealthRecords { get; set; }

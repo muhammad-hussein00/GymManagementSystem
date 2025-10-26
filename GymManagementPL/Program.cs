@@ -3,6 +3,7 @@ using GymManagementDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using GymManagementDAL.Repositories.Classes;
 using GymManagementDAL.UnitOfWork;
+using GymManagementBLL;
 
 namespace GymManagementPL
 {
@@ -22,6 +23,7 @@ namespace GymManagementPL
             //builder.Services.AddScoped(typeof(IPlanRepository), typeof(PlanRepository));
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
             builder.Services.AddScoped<ITrainerRepository,TrainerRepository>();
+            builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
 
 
             var app = builder.Build();

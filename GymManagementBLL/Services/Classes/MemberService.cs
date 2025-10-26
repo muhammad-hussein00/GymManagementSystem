@@ -12,6 +12,7 @@ using System.Reflection.Metadata.Ecma335;
 using GymManagementDAL.Models.Owned;
 using GymManagementBLL.ViewModels.HealthRecordViewModels;
 using GymManagementDAL.UnitOfWork;
+using GymManagementDAL.Data.Models;
 
 namespace GymManagementBLL.Services.Classes
 {
@@ -24,7 +25,7 @@ namespace GymManagementBLL.Services.Classes
         }
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
-            var members = _unitOfWork.GetRepository<Trainer>().GetAll();
+            var members = _unitOfWork.GetRepository<Member>().GetAll();
             if (members is null || members.Any() == false) return [];
             var memberViewModels = members.Select(x => new MemberViewModel()
             {
@@ -41,7 +42,7 @@ namespace GymManagementBLL.Services.Classes
         {
             try
             {
-                var member = _unitOfWork.GetRepository<Trainer>().GetById(id);
+                var member = _unitOfWork.GetRepository<Member>().GetById(id);
                 if (member is null)
                     return null;
 
@@ -90,7 +91,7 @@ namespace GymManagementBLL.Services.Classes
         }
         public MemberToUpdateViewModel? GetMemberToUpdate(int memberId)
         {
-            var member = _unitOfWork.GetRepository<Trainer>().GetById(memberId);
+            var member = _unitOfWork.GetRepository<Member>().GetById(memberId);
             if (member is null) return null;
 
             return new MemberToUpdateViewModel()
@@ -106,14 +107,14 @@ namespace GymManagementBLL.Services.Classes
         public bool CreateMember(CreateMemberViewModel createMemberViewModel)
         {
             //If member is exist
-            var memberIsExist = _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Email == createMemberViewModel.Email ||
+            var memberIsExist = _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == createMemberViewModel.Email ||
                                                          x.Phone == createMemberViewModel.Phone).Any();
             //If email is exist or phone is exist return false
             if (memberIsExist) return false;
             //Adding member
             try
             {
-                var member = new Trainer()
+                var member = new Member()
                 {
                     Email = createMemberViewModel.Email,
                     Phone = createMemberViewModel.Phone,
@@ -135,7 +136,7 @@ namespace GymManagementBLL.Services.Classes
                         Note = createMemberViewModel.HealthRecordViewModel.Note
                     }
                 };
-                _unitOfWork.GetRepository<Trainer>().Add(member);
+                _unitOfWork.GetRepository<Member>().Add(member);
                 return _unitOfWork.SaveChanges() > 0;
             }
             catch
