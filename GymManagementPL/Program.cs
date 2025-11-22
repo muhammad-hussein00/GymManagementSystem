@@ -3,6 +3,10 @@ using GymManagementDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using GymManagementDAL.Repositories.Classes;
 using GymManagementDAL.UnitOfWork;
+using GymManagementBLL;
+using GymManagementBLL.Services.Interfaces;
+using GymManagementBLL.Services.Classes;
+using GymManagementDAL.Models;
 
 namespace GymManagementPL
 {
@@ -21,9 +25,16 @@ namespace GymManagementPL
             //builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             //builder.Services.AddScoped(typeof(IPlanRepository), typeof(PlanRepository));
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+            builder.Services.AddScoped<ISessionRepository,SessionRepository>();
             builder.Services.AddScoped<ITrainerRepository,TrainerRepository>();
+            builder.Services.AddScoped<IHomeAnalyticsService, HomeAnalyticsService>();
+            builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
 
+            /*
+             * System.AggregateException: 'Some services are not able to be constructed (Error while validating the service descriptor 'ServiceType: GymManagementDAL.UnitOfWork.IUnitOfWork Lifetime: Scoped ImplementationType: GymManagementDAL.UnitOfWork.UnitOfWork': Unable to resolve service for type 'GymManagementDAL.Repositories.Interfaces.ISessionRepository' while attempting to activate 'GymManagementDAL.UnitOfWork.UnitOfWork'.) (Error while validating the service descriptor 'ServiceType: GymManagementBLL.Services.Interfaces.IHomeAnalyticsService Lifetime: Scoped ImplementationType: GymManagementBLL.Services.Classes.HomeAnalyticsService': Unable to resolve service for type 'GymManagementDAL.Repositories.Interfaces.ISessionRepository' while attempting to activate 'GymManagementDAL.UnitOfWork.UnitOfWork'.)'
 
+             */
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

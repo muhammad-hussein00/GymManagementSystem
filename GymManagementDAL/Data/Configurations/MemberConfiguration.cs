@@ -1,4 +1,5 @@
-﻿using GymManagementDAL.Models;
+﻿using GymManagementDAL.Data.Models;
+using GymManagementDAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Configurations
 {
-    internal class MemberConfiguration : GymUserConfiguration<Trainer>, IEntityTypeConfiguration<Trainer>
+    internal class MemberConfiguration : GymUserConfiguration<Member>, IEntityTypeConfiguration<Member>
     {
-        public new void Configure(EntityTypeBuilder<Trainer> builder)
+        public new void Configure(EntityTypeBuilder<Member> builder)
         {
             builder.Property(T => T.CreatedAt)
                    .HasColumnName("JoinDate")

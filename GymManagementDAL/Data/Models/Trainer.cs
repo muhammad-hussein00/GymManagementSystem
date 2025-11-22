@@ -9,9 +9,8 @@ namespace GymManagementDAL.Models
 {
     public class Trainer : GymUser
     {
-        public Specialty Specialty { get; set; }
-
         // HireDate == CreatedAt of basemodel
+        public Specialty Specialty { get; set; }
 
         #region Relationships
         #region Trainer - Session

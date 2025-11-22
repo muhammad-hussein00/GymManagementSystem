@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
+    // 1:1 Relationship with member
     public class HealthRecord : BaseModel
     {
         public decimal Height { get; set; }
