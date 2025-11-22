@@ -16,5 +16,18 @@ namespace GymManagementPL.Controllers
             var members = _memberService.GetAllMembers();
             return View(members);
         }
+        public ActionResult MemberDetails(int id)
+        {
+            // If the Id is not valid
+            if (id <= 0)
+                return RedirectToAction(nameof(Index));
+
+            // If member not found in database
+            var members = _memberService.GetMemberDetails(id);
+            if (members == null)
+                return RedirectToAction(nameof(Index));
+
+            return View(members);
+        }
     }
 }
