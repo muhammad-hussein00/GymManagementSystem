@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    internal class Session : BaseModel
+    public class Session : BaseModel
     {
         #region Properties
         public string Description { get; set; } = null!;
@@ -14,6 +14,7 @@ namespace GymManagementDAL.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         #endregion
+
         #region Relationships
         #region Session - Category
         public int CategoryId { get; set; }

@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Data.Contexts
 {
-    internal class GymContext : DbContext
+    public class GymContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GymContext(DbContextOptions<GymContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer("server = .; Database = GymManagement; Trusted_Connection = true; TrustServerCertificate = true");
+    
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
         #region DbSets
-        public DbSet<Member> Members { get; set; }
+        public DbSet<Trainer> Members { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<HealthRecord> HealthRecords { get; set; }

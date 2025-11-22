@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    internal class Category : BaseModel
+    public class Category : BaseModel
     {
         #region Properties
         public string CategoryName { get; set; } = null!;

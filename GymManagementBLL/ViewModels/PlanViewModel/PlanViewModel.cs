@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymManagementDAL.Models
+namespace GymManagementBLL.ViewModels.PlanViewModel
 {
-    public class Plan : BaseModel
+    internal class PlanViewModel
     {
+        public int PlanId { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public int DurationDays { get; set; }
         public decimal Price { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<MemberPlan> MemberPlans { get; set; } = null!;
     }
 }

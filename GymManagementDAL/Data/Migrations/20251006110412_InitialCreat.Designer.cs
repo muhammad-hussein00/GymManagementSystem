@@ -108,7 +108,7 @@ namespace GymManagementDAL.Data.Migrations
                     b.ToTable("Members", (string)null);
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.Member", b =>
+            modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -343,7 +343,7 @@ namespace GymManagementDAL.Data.Migrations
 
             modelBuilder.Entity("GymManagementDAL.Models.Booking", b =>
                 {
-                    b.HasOne("GymManagementDAL.Models.Member", "Member")
+                    b.HasOne("GymManagementDAL.Models.Trainer", "Trainer")
                         .WithMany("Bookings")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -355,21 +355,21 @@ namespace GymManagementDAL.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.Navigation("Trainer");
 
                     b.Navigation("Session");
                 });
 
             modelBuilder.Entity("GymManagementDAL.Models.HealthRecord", b =>
                 {
-                    b.HasOne("GymManagementDAL.Models.Member", null)
+                    b.HasOne("GymManagementDAL.Models.Trainer", null)
                         .WithOne("HealthRecord")
                         .HasForeignKey("GymManagementDAL.Models.HealthRecord", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.Member", b =>
+            modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>
                 {
                     b.OwnsOne("GymManagementDAL.Models.Owned.Address", "Address", b1 =>
                         {
@@ -406,7 +406,7 @@ namespace GymManagementDAL.Data.Migrations
 
             modelBuilder.Entity("GymManagementDAL.Models.MemberPlan", b =>
                 {
-                    b.HasOne("GymManagementDAL.Models.Member", "Member")
+                    b.HasOne("GymManagementDAL.Models.Trainer", "Trainer")
                         .WithMany("MemberPlans")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -418,7 +418,7 @@ namespace GymManagementDAL.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.Navigation("Trainer");
 
                     b.Navigation("Plan");
                 });
@@ -482,7 +482,7 @@ namespace GymManagementDAL.Data.Migrations
                     b.Navigation("Sessions");
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.Member", b =>
+            modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>
                 {
                     b.Navigation("Bookings");
 
