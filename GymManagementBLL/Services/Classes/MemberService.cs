@@ -16,12 +16,13 @@ using GymManagementDAL.Data.Models;
 
 namespace GymManagementBLL.Services.Classes
 {
-    internal class MemberService : IMemberService
+    public class MemberService : IMemberService
     {
-        private readonly UnitOfWork _unitOfWork;
-        public MemberService(UnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public MemberService(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
