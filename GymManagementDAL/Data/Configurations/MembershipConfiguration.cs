@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Configurations
 {
-    internal class MemberPlanConfiguration : IEntityTypeConfiguration<MemberPlan>
+    internal class MembershipConfiguration : IEntityTypeConfiguration<Membership>
     {
-        public void Configure(EntityTypeBuilder<MemberPlan> builder)
+        public void Configure(EntityTypeBuilder<Membership> builder)
         {
             builder.Property(x => x.CreatedAt).HasColumnName("StartDate");
-            builder.HasKey( x => new {x.MemberId, x.PlanId, x.CreatedAt});
+            builder.HasKey( x => new {x.MemberId, x.PlanId});
             builder.Ignore( x => x.Id);
         }
     }

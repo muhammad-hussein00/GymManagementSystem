@@ -59,7 +59,7 @@ namespace GymManagementBLL.Services.Classes
                     Address = $"{member.Address.BuildingNumber} - {member.Address.Street} - {member.Address.City}",
                     DateOfBirth = member.DateOfBirth.ToShortDateString(),
                 };
-                var activeMemberPlan = _unitOfWork.GetRepository<MemberPlan>().GetAll(x => x.MemberId == id && x.IsActive)
+                var activeMemberPlan = _unitOfWork.GetRepository<Membership>().GetAll(x => x.MemberId == id && x.IsActive)
                                                             .FirstOrDefault();
                 if (activeMemberPlan is not null)
                 {
@@ -168,18 +168,18 @@ namespace GymManagementBLL.Services.Classes
             var memberRepo = _unitOfWork.GetRepository<Trainer>();
             var member = memberRepo.GetById(memberId);
             if(member == null) return false;
-            var activeMemberBookedSessions = _unitOfWork.GetRepository<Booking>().GetAll(x => x.Id == memberId && x.Session.StartDate > DateTime.Now)
+            var activeMemberBookedSessions = _unitOfWork.GetRepository<MemberSession>().GetAll(x => x.Id == memberId && x.Session.StartDate > DateTime.Now)
                                                                .Any();
             if(activeMemberBookedSessions == true) return false;
             
-            var memberPlans = _unitOfWork.GetRepository<MemberPlan>().GetAll(x => x.MemberId == memberId);
+            var memberPlans = _unitOfWork.GetRepository<Membership>().GetAll(x => x.MemberId == memberId);
             try
             {
                 if (memberPlans is not null)
                 {
                     foreach (var memberPlan in memberPlans)
                     {
-                        _unitOfWork.GetRepository<MemberPlan>().Delete(memberPlan);
+                        _unitOfWork.GetRepository<Membership>().Delete(memberPlan);
                     }
                 }
                 memberRepo.Delete(member);

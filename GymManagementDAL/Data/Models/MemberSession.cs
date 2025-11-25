@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GymManagementDAL.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    public class Booking : BaseModel
+    public class MemberSession : BaseModel
     {
         public int MemberId { get; set; }
-        public Trainer Member { get; set; } = null!;
         public int SessionId { get; set; }
-        public Session Session { get; set; } = null!;
         //bookingday == CreatedAt of basModel
         public bool IsAttended { get; set; }
+        public Member Member { get; set; } = null!;
+        public Session Session { get; set; } = null!;
         
     }
 }

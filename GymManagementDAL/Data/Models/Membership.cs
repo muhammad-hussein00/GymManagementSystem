@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GymManagementDAL.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Models
 {
-    public class MemberPlan : BaseModel
+    public class Membership : BaseModel
     {
         public int MemberId { get; set; }
-        public Trainer Member { get; set; } = null!;
+        public Member Member { get; set; } = null!;
         public int PlanId { get; set; }
         public Plan Plan { get; set; } = null!;
         public DateTime EndDate { get; set; }

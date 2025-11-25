@@ -26,8 +26,8 @@ namespace GymManagementDAL.Models
         public Trainer Trainer { get; set; } = null!;
         #endregion
 
-        #region Session - Bookings
-        public ICollection<Booking> Bookings { get; set; } = null!;
+        #region Session - MemberSession
+        public ICollection<MemberSession> MemberSessions { get; set; } = null!;
         #endregion
         #endregion
     }

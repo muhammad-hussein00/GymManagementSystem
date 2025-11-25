@@ -12,8 +12,20 @@ namespace GymManagementDAL.Data.Models
         // JoinDate == CreatedAt
         public string? Photo { get; set; }
 
+        #region Relationships
+
         #region Member - Health record
         public HealthRecord HealthRecord { get; set; } = null!;
+        #endregion
+
+        #region Member - Membership
+        public ICollection<Membership> Memberships { get; set; } = null!;
+        #endregion
+
+        #region Member - MemberSession
+        public ICollection<MemberSession> MemberSessions { get; set; } = null!;
+        #endregion
+
         #endregion
     }
 }
