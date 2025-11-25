@@ -102,7 +102,7 @@ namespace GymManagementBLL.Services.Classes
         #region Helper methods
         private bool HasActiveMemberPlan(int planId)
         {
-            return _unitOfWork.GetRepository<MemberPlan>().GetAll(x => x.Id == planId && x.IsActive == true).Any();
+            return _unitOfWork.GetRepository<Membership>().GetAll(x => x.Id == planId && x.IsActive == true).Any();
         }
         #endregion
     }

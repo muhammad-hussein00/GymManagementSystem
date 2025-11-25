@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GymManagementDAL.Data.Migrations
+namespace GymManagementDAL.Migrations
 {
     [DbContext(typeof(GymContext))]
-    [Migration("20251006110412_InitialCreat")]
-    partial class InitialCreat
+    [Migration("20251123195545_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,33 +25,65 @@ namespace GymManagementDAL.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GymManagementDAL.Models.Booking", b =>
+            modelBuilder.Entity("GymManagementDAL.Data.Models.Member", b =>
                 {
-                    b.Property<int>("MemberId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("SessionId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasColumnName("BookingDate")
+                        .HasColumnName("JoinDate")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<bool>("IsAttended")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(11)");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("datetime2");
 
-                    b.HasKey("MemberId", "SessionId", "CreatedAt");
+                    b.HasKey("Id");
 
-                    b.HasIndex("SessionId");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
-                    b.ToTable("Bookings");
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
+                    b.ToTable("Members", t =>
+                        {
+                            t.HasCheckConstraint("GymUserValidEmail", "Email LIKE '_%@_%._%'");
+
+                            t.HasCheckConstraint("GymUserValidPhone", "Phone LIKE '01%' AND Phone NOT LIKE '%[^0-9]%'");
+                        });
                 });
 
             modelBuilder.Entity("GymManagementDAL.Models.Category", b =>
@@ -108,66 +140,34 @@ namespace GymManagementDAL.Data.Migrations
                     b.ToTable("Members", (string)null);
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>
+            modelBuilder.Entity("GymManagementDAL.Models.MemberSession", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("MemberId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("SessionId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasColumnName("JoinDate")
+                        .HasColumnName("BookingDate")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsAttended")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("MemberId", "SessionId");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
+                    b.HasIndex("SessionId");
 
-                    b.HasIndex("Phone")
-                        .IsUnique();
-
-                    b.ToTable("Members", t =>
-                        {
-                            t.HasCheckConstraint("GymUserValidEmail", "Email LIKE '_%@_%._%'");
-
-                            t.HasCheckConstraint("GymUserValidPhone", "Phone LIKE '01%' AND Phone LIKE '%[^0-9]%'");
-                        });
+                    b.ToTable("MemberSessions");
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.MemberPlan", b =>
+            modelBuilder.Entity("GymManagementDAL.Models.Membership", b =>
                 {
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
@@ -185,11 +185,11 @@ namespace GymManagementDAL.Data.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("MemberId", "PlanId", "CreatedAt");
+                    b.HasKey("MemberId", "PlanId");
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("MemberPlans");
+                    b.ToTable("Memberships");
                 });
 
             modelBuilder.Entity("GymManagementDAL.Models.Plan", b =>
@@ -315,7 +315,9 @@ namespace GymManagementDAL.Data.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(11)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(11)");
 
                     b.Property<int>("Specialty")
                         .HasColumnType("int");
@@ -336,40 +338,12 @@ namespace GymManagementDAL.Data.Migrations
                             t.HasCheckConstraint("GymUserValidEmail", "Email LIKE '_%@_%._%'")
                                 .HasName("GymUserValidEmail1");
 
-                            t.HasCheckConstraint("GymUserValidPhone", "Phone LIKE '01%' AND Phone LIKE '%[^0-9]%'")
+                            t.HasCheckConstraint("GymUserValidPhone", "Phone LIKE '01%' AND Phone NOT LIKE '%[^0-9]%'")
                                 .HasName("GymUserValidPhone1");
                         });
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.Booking", b =>
-                {
-                    b.HasOne("GymManagementDAL.Models.Trainer", "Trainer")
-                        .WithMany("Bookings")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GymManagementDAL.Models.Session", "Session")
-                        .WithMany("Bookings")
-                        .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trainer");
-
-                    b.Navigation("Session");
-                });
-
-            modelBuilder.Entity("GymManagementDAL.Models.HealthRecord", b =>
-                {
-                    b.HasOne("GymManagementDAL.Models.Trainer", null)
-                        .WithOne("HealthRecord")
-                        .HasForeignKey("GymManagementDAL.Models.HealthRecord", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>
+            modelBuilder.Entity("GymManagementDAL.Data.Models.Member", b =>
                 {
                     b.OwnsOne("GymManagementDAL.Models.Owned.Address", "Address", b1 =>
                         {
@@ -404,10 +378,38 @@ namespace GymManagementDAL.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.MemberPlan", b =>
+            modelBuilder.Entity("GymManagementDAL.Models.HealthRecord", b =>
                 {
-                    b.HasOne("GymManagementDAL.Models.Trainer", "Trainer")
-                        .WithMany("MemberPlans")
+                    b.HasOne("GymManagementDAL.Data.Models.Member", null)
+                        .WithOne("HealthRecord")
+                        .HasForeignKey("GymManagementDAL.Models.HealthRecord", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GymManagementDAL.Models.MemberSession", b =>
+                {
+                    b.HasOne("GymManagementDAL.Data.Models.Member", "Member")
+                        .WithMany("MemberSessions")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GymManagementDAL.Models.Session", "Session")
+                        .WithMany("MemberSessions")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Session");
+                });
+
+            modelBuilder.Entity("GymManagementDAL.Models.Membership", b =>
+                {
+                    b.HasOne("GymManagementDAL.Data.Models.Member", "Member")
+                        .WithMany("Memberships")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -418,7 +420,7 @@ namespace GymManagementDAL.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Trainer");
+                    b.Navigation("Member");
 
                     b.Navigation("Plan");
                 });
@@ -477,19 +479,19 @@ namespace GymManagementDAL.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GymManagementDAL.Models.Category", b =>
+            modelBuilder.Entity("GymManagementDAL.Data.Models.Member", b =>
                 {
-                    b.Navigation("Sessions");
-                });
-
-            modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>
-                {
-                    b.Navigation("Bookings");
-
                     b.Navigation("HealthRecord")
                         .IsRequired();
 
-                    b.Navigation("MemberPlans");
+                    b.Navigation("MemberSessions");
+
+                    b.Navigation("Memberships");
+                });
+
+            modelBuilder.Entity("GymManagementDAL.Models.Category", b =>
+                {
+                    b.Navigation("Sessions");
                 });
 
             modelBuilder.Entity("GymManagementDAL.Models.Plan", b =>
@@ -499,7 +501,7 @@ namespace GymManagementDAL.Data.Migrations
 
             modelBuilder.Entity("GymManagementDAL.Models.Session", b =>
                 {
-                    b.Navigation("Bookings");
+                    b.Navigation("MemberSessions");
                 });
 
             modelBuilder.Entity("GymManagementDAL.Models.Trainer", b =>

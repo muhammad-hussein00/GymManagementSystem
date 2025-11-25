@@ -15,10 +15,11 @@ namespace GymManagementDAL.Configurations
         {
             builder.Property(G => G.Name).HasMaxLength(50).IsUnicode(false);
             builder.Property(G => G.Email).HasMaxLength(100).IsUnicode(false);
+            builder.Property(X => X.Phone).HasMaxLength(11).IsUnicode(false);
             builder.ToTable(Tb =>
             {
                 Tb.HasCheckConstraint("GymUserValidEmail", "Email LIKE '_%@_%._%'");
-                Tb.HasCheckConstraint("GymUserValidPhone", "Phone LIKE '01%' AND Phone LIKE '%[^0-9]%'");
+                Tb.HasCheckConstraint("GymUserValidPhone", "Phone LIKE '01%' AND Phone NOT LIKE '%[^0-9]%'");
             });
             builder.HasIndex(G => G.Email).IsUnique();
             builder.HasIndex(G => G.Phone).IsUnique();

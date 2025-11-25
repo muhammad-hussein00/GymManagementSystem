@@ -13,6 +13,13 @@ namespace GymManagementDAL.Models
         public int DurationDays { get; set; }
         public decimal Price { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<MemberPlan> MemberPlans { get; set; } = null!;
+
+        #region Relationships
+
+        #region Plan - Membership
+        public ICollection<Membership> MemberPlans { get; set; } = null!;
+        #endregion
+
+        #endregion
     }
 }
