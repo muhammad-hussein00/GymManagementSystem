@@ -102,6 +102,7 @@ namespace GymManagementBLL.Services.Classes
                 Photo = member.Photo,
                 Phone = member.Phone,
                 BuildingNumber = member.Address.BuildingNumber,
+                Street = member.Address.Street,
                 City = member.Address.City,
             };
         }
@@ -147,12 +148,13 @@ namespace GymManagementBLL.Services.Classes
         }
         public bool UpdateMember(MemberToUpdateViewModel memberToUpdateView, int memberId)
         {
+            // Checking if email exist or phone exist 
+            var emailExist = _unitOfWork.GetRepository<Member>().GetAll(X => X.Email == memberToUpdateView.Email && X.Id != memberId).Any();
+            var phoneExist = _unitOfWork.GetRepository<Member>().GetAll(X => X.Phone == memberToUpdateView.Phone && X.Id != memberId).Any();
+            if(phoneExist || emailExist)
+                return false;
 
-            if (!MemberExists(memberId)
-                ||EmailExists(memberToUpdateView.Email)
-                ||PhoneExists(memberToUpdateView.Phone)) return false;
-
-            var member = _unitOfWork.GetRepository<Trainer>().GetById(memberId);
+            var member = _unitOfWork.GetRepository<Member>().GetById(memberId);
 
             member!.Address.BuildingNumber = memberToUpdateView.BuildingNumber;
             member!.Address.Street = memberToUpdateView.Street;
@@ -160,7 +162,7 @@ namespace GymManagementBLL.Services.Classes
             member!.Phone = memberToUpdateView.Phone;
             member!.Email = memberToUpdateView.Email;
             member!.UpdatedAt = DateTime.Now;
-            _unitOfWork.GetRepository<Trainer>().Update(member);
+            _unitOfWork.GetRepository<Member>().Update(member);
             return _unitOfWork.SaveChanges() > 0;
         }
         public bool TryDeleteMember(int memberId)
