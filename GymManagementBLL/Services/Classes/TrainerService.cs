@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.Services.Classes
 {
-    internal class TrainService : ITrainService
+    internal class TrainerService : ITrainService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public TrainService(IUnitOfWork unitOfWork)
+        public TrainerService(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
         }
@@ -146,7 +146,6 @@ namespace GymManagementBLL.Services.Classes
                 trainer.Specialty = trainerUpdated.Specialization;
                 _unitOfWork.TrainerRepository.Update(trainer);
                 return _unitOfWork.SaveChanges() > 0;
-
             }
             catch (Exception ex)
             {

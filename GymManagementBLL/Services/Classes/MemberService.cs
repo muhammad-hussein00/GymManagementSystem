@@ -13,6 +13,7 @@ using GymManagementDAL.Models.Owned;
 using GymManagementBLL.ViewModels.HealthRecordViewModels;
 using GymManagementDAL.UnitOfWork;
 using GymManagementDAL.Data.Models;
+using Member = GymManagementDAL.Data.Models.Member;
 
 namespace GymManagementBLL.Services.Classes
 {
@@ -165,9 +166,9 @@ namespace GymManagementBLL.Services.Classes
             _unitOfWork.GetRepository<Member>().Update(member);
             return _unitOfWork.SaveChanges() > 0;
         }
-        public bool TryDeleteMember(int memberId)
+        public bool DeleteMember(int memberId)
         {
-            var memberRepo = _unitOfWork.GetRepository<Trainer>();
+            var memberRepo = _unitOfWork.GetRepository<Member>();
             var member = memberRepo.GetById(memberId);
             if(member == null) return false;
             var activeMemberBookedSessions = _unitOfWork.GetRepository<MemberSession>().GetAll(x => x.Id == memberId && x.Session.StartDate > DateTime.Now)
@@ -196,15 +197,15 @@ namespace GymManagementBLL.Services.Classes
         #region Helper methods
         private bool EmailExists (string email)
         {
-            return _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Email == email).Any();
+            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email).Any();
         }
         private bool PhoneExists(string phone)
         {
-            return _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Phone == phone).Any();
+            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Phone == phone).Any();
         }
         private bool MemberExists(int memberId)
         {
-            return _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Id == memberId).Any();
+            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Id == memberId).Any();
         }
         #endregion
     }

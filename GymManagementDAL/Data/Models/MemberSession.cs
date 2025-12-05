@@ -9,12 +9,17 @@ namespace GymManagementDAL.Models
 {
     public class MemberSession : BaseModel
     {
-        public int MemberId { get; set; }
-        public int SessionId { get; set; }
         //bookingday == CreatedAt of basModel
         public bool IsAttended { get; set; }
+
+        #region MemberSession - Member
+        public int MemberId { get; set; }
         public Member Member { get; set; } = null!;
-        public Session Session { get; set; } = null!;
-        
+        #endregion
+
+        #region MemberSession - Session
+        public int SessionId { get; set; }
+        public Session Session { get; set; } = null!; 
+        #endregion
     }
 }
