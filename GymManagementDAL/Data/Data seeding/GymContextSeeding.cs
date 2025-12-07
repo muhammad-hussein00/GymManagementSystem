@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Data.Data_seeding
 {
-    internal static class GymContextSeeding
+    public static class GymContextSeeding
     {
-        private static bool IsSeeded(GymContext gymContext)
+        public static bool IsSeeded(GymContext gymContext)
         {
             //Check for data is exest.
             try

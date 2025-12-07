@@ -7,6 +7,7 @@ using GymManagementBLL;
 using GymManagementBLL.Services.Interfaces;
 using GymManagementBLL.Services.Classes;
 using GymManagementDAL.Models;
+using GymManagementDAL.Data.Data_seeding;
 
 namespace GymManagementPL
 {
@@ -29,6 +30,7 @@ namespace GymManagementPL
             builder.Services.AddScoped<ITrainerRepository,TrainerRepository>();
             builder.Services.AddScoped<IHomeAnalyticsService, HomeAnalyticsService>();
             builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
 
             /*
@@ -37,7 +39,16 @@ namespace GymManagementPL
              */
             var app = builder.Build();
 
+            #region Seeding data
+
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<GymContext>();
+            GymContextSeeding.IsSeeded(dbContext); 
+            
+            #endregion
+
             // Configure the HTTP request pipeline.
+            #region Configure pipline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -54,7 +65,8 @@ namespace GymManagementPL
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
-                .WithStaticAssets();
+                .WithStaticAssets(); 
+            #endregion
 
             app.Run();
         }
