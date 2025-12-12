@@ -85,11 +85,11 @@
                 @foreach (var speciality in Html.GetEnumSelectList<Specialty>())
                 {
                     <div class="form-check">
-                    <input class="form-check-input" type="radio" asp-for="Specializations"
-                           value="@speciality.Value" 
-                           id="@speciality.Value"/>
-                    <label class="form-check-label" asp-for="@speciality.Value">@speciality.Text</label>
-                </div>
+                        <input class="form-check-input" type="radio" asp-for="Specializations"
+                               value="@speciality.Value"
+                               id="@speciality.Value" />
+                        <label class="form-check-label" asp-for="@speciality.Value">@speciality.Text</label>
+                    </div>
                 }
             </div>
         </div>
