@@ -11,7 +11,7 @@ namespace GymManagementPL.Controllers
         {
             _sessionService = sessionService;
         }
-        public IActionResult Index()
+        public ActionResult Index()
         {
             var sessions = _sessionService.GetAllSessions();
             return View(sessions);
