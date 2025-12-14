@@ -23,6 +23,7 @@ namespace GymManagementBLL.Services.Classes
             this._unitOfWork = unitOfWork;
             this._mapper = mapper;
         }
+        #region Create session
         public bool CreateSession(CreateSessionViewModel createSessionViewModel)
         {
             try
@@ -45,6 +46,24 @@ namespace GymManagementBLL.Services.Classes
                 return false;
             }
         }
+
+        #region For Dropdown of create session
+        public IEnumerable<TrainerToSelectViewModel> GetTrainersForDropdown()
+        {
+            var trainers = _unitOfWork.TrainerRepository.GetAll();
+            return _mapper.Map<IEnumerable<TrainerToSelectViewModel>>(trainers);
+        }
+
+        public IEnumerable<CategoryToSelectViewModel> GetAllCategoriesForDropdown()
+        {
+            var categories = _unitOfWork.GetRepository<Category>().GetAll();
+            return _mapper.Map<IEnumerable<CategoryToSelectViewModel>>(categories);
+        }
+        #endregion
+
+        #endregion
+
+        #region Get all sessions 
         public IEnumerable<SessionViewModel> GetAllSessions()
         {
             var sessions = _unitOfWork.SessionRepository.GetAllSessionsWithTrainerAndCategory();
@@ -54,9 +73,12 @@ namespace GymManagementBLL.Services.Classes
             var mappedSessions = _mapper.Map<IEnumerable<Session>, IEnumerable<SessionViewModel>>(sessions);
             foreach (var session in mappedSessions)
                 session.AvailableSlots = session.Capacity - _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id);
-            
+
             return mappedSessions;
         }
+        #endregion
+
+        #region Get session details
         public SessionViewModel? GetSessionDetails(int sessionId)
         {
             var session = _unitOfWork.SessionRepository.GetSessionWithTrainerAndCategory(sessionId);
@@ -69,9 +91,12 @@ namespace GymManagementBLL.Services.Classes
 
             return mappedSession;
         }
+        #endregion
+
+        #region Update session
         public bool UpdateSession(UpdateSessionViewModel updateSessionViewModel)
         {
-            if(updateSessionViewModel == null ||
+            if (updateSessionViewModel == null ||
                 !IsTrainerExists(updateSessionViewModel.TrainerId) ||
                 !IsValidDateTime(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate))
             {
@@ -82,6 +107,9 @@ namespace GymManagementBLL.Services.Classes
             _unitOfWork.SessionRepository.Update(UpdatedSession);
             return _unitOfWork.SaveChanges() > 0;
         }
+        #endregion
+
+        #region Delete session
         public bool DeleteSession(int sessionId)
         {
             var session = _unitOfWork.SessionRepository.GetById(sessionId);
@@ -105,6 +133,7 @@ namespace GymManagementBLL.Services.Classes
             _unitOfWork.SessionRepository.Delete(session);
             return _unitOfWork.SaveChanges() > 0;
         }
+        #endregion
 
         #region Helper methods
         private bool IsTrainerExists(int trainerId)
@@ -117,7 +146,7 @@ namespace GymManagementBLL.Services.Classes
         }
         private bool IsValidDateTime(DateTime startDate, DateTime endDate)
         {
-            return startDate < endDate;
+            return startDate < endDate && DateTime.Now > startDate;
         }
         #endregion
     }
