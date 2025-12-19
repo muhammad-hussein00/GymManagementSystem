@@ -64,7 +64,50 @@ namespace GymManagementPL.Controllers
                 return View(createSessionView);
             }
         }
+        #endregion
 
+        #region Edit session
+        public ActionResult Edit(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id cannot be negative or zero.";
+                return RedirectToAction(nameof(Index));
+            }
+            var sessionToUpdate = _sessionService.GetSessionToUpdate(id);
+
+            if (sessionToUpdate is null)
+            {
+                TempData["ErrorMessage"] = "Session not found.";
+                return RedirectToAction(nameof(Index));
+        }
+
+            LoadDropDownForTrainers();
+            return View(sessionToUpdate);
+        }
+
+        [HttpPost]
+        public ActionResult Edit( int Id , UpdateSessionViewModel updatedSession)
+        {
+            if (!ModelState.IsValid)
+            {
+                LoadDropDownForTrainers();
+                return View(updatedSession);
+            }
+            var isUpdated = _sessionService.UpdateSession(Id ,updatedSession);
+            if(isUpdated)
+            {
+                TempData["SuccessMessage"] = "Session updated successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Session failed to update.";
+                LoadDropDownForTrainers();
+                return View(updatedSession);
+            }
+        }
+        #endregion
 
         #region Helper methods
         private void LoadDropDown()
@@ -75,6 +118,11 @@ namespace GymManagementPL.Controllers
 
             ViewBag.Trainers = new SelectList(trainers, "Id", "Name");
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
+        }
+        private void LoadDropDownForTrainers()
+        {
+            var trainers = _sessionService.GetTrainersForDropdown();
+            ViewBag.Trainers = new SelectList(trainers, "Id", "Name");
         }
         #endregion
     }
