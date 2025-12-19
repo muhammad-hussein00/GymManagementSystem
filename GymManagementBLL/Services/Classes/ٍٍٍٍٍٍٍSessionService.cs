@@ -158,7 +158,9 @@ namespace GymManagementBLL.Services.Classes
         }
         private bool IsValidDateTime(DateTime startDate, DateTime endDate)
         {
-            return startDate < endDate && DateTime.Now > startDate;
+            return (startDate < endDate) && (DateTime.Now < startDate);
+        }
+
         private bool IsSessionValidToUpdate(Session? session)
         {
             if (session is null)
