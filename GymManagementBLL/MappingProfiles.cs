@@ -19,7 +19,7 @@ namespace GymManagementBLL
                                                       .ForMember(dest => dest.TrainerName, options => options.MapFrom(x => x.Trainer.Name));
 
             CreateMap<CreateSessionViewModel, Session>();
-            CreateMap<UpdateSessionViewModel, Session>();
+            CreateMap<UpdateSessionViewModel, Session>().ReverseMap();
             #endregion
 
             #region For Trainer
