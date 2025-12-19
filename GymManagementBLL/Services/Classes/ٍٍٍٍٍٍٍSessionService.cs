@@ -29,10 +29,10 @@ namespace GymManagementBLL.Services.Classes
             try
             {
                 // Check if valid to create session
-                if (createSessionViewModel == null ||
-                        !IsTrainerExists(createSessionViewModel.TrainerId) ||
-                        !IsCategoryExists(createSessionViewModel.CategoryId) ||
-                        !IsValidDateTime(createSessionViewModel.StartDate, createSessionViewModel.EndDate))
+                if (createSessionViewModel == null) return false;
+                if (!IsTrainerExists(createSessionViewModel!.TrainerId)) return false;
+                if(!IsCategoryExists(createSessionViewModel.CategoryId)) return false;
+                if(!IsValidDateTime(createSessionViewModel.StartDate, createSessionViewModel.EndDate)) return false;
                     return false;
 
                 // Mapping and adding it
