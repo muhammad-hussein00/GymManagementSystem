@@ -33,7 +33,6 @@ namespace GymManagementBLL.Services.Classes
                 if (!IsTrainerExists(createSessionViewModel!.TrainerId)) return false;
                 if(!IsCategoryExists(createSessionViewModel.CategoryId)) return false;
                 if(!IsValidDateTime(createSessionViewModel.StartDate, createSessionViewModel.EndDate)) return false;
-                    return false;
 
                 // Mapping and adding it
                 var mappedSession = _mapper.Map<Session>(createSessionViewModel);
@@ -110,12 +109,12 @@ namespace GymManagementBLL.Services.Classes
         {
             try
             {
-            if (updateSessionViewModel == null ||
-                !IsTrainerExists(updateSessionViewModel.TrainerId) ||
-                !IsValidDateTime(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate))
-            {
-                return false;
-            }
+                if (updateSessionViewModel == null ||
+                        !IsTrainerExists(updateSessionViewModel.TrainerId) ||
+                        !IsValidDateTime(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate))
+                {
+                    return false;
+                }
 
                 var session = _unitOfWork.SessionRepository.GetById(sessionId);
 
@@ -123,8 +122,8 @@ namespace GymManagementBLL.Services.Classes
                 session!.UpdatedAt = DateTime.Now;
 
                 _unitOfWork.SessionRepository.Update(session);
-            return _unitOfWork.SaveChanges() > 0;
-        }
+                return _unitOfWork.SaveChanges() > 0;
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
