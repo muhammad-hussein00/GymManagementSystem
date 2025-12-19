@@ -13,7 +13,8 @@ namespace GymManagementBLL.Services.Interfaces
         IEnumerable<SessionViewModel> GetAllSessions();
         SessionViewModel? GetSessionDetails(int sessionId);
         bool CreateSession(CreateSessionViewModel createSessionViewModel);
-        bool UpdateSession(UpdateSessionViewModel updateSessionViewModel);
+        bool UpdateSession( int sessionId ,UpdateSessionViewModel updateSessionViewModel);
+        UpdateSessionViewModel GetSessionToUpdate(int sessionId);
         bool DeleteSession(int sessionId);  
         IEnumerable<TrainerToSelectViewModel> GetTrainersForDropdown();
         IEnumerable<CategoryToSelectViewModel> GetAllCategoriesForDropdown();
