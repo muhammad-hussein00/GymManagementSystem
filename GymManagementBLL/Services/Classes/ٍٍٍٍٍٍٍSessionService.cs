@@ -106,8 +106,10 @@ namespace GymManagementBLL.Services.Classes
         #endregion
 
         #region Update session
-        public bool UpdateSession(UpdateSessionViewModel updateSessionViewModel)
+        public bool UpdateSession( int sessionId ,UpdateSessionViewModel updateSessionViewModel)
         {
+            try
+            {
             if (updateSessionViewModel == null ||
                 !IsTrainerExists(updateSessionViewModel.TrainerId) ||
                 !IsValidDateTime(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate))
@@ -115,8 +117,12 @@ namespace GymManagementBLL.Services.Classes
                 return false;
             }
 
-            var UpdatedSession = _mapper.Map<Session>(updateSessionViewModel);
-            _unitOfWork.SessionRepository.Update(UpdatedSession);
+                var session = _unitOfWork.SessionRepository.GetById(sessionId);
+
+                _mapper.Map(updateSessionViewModel, session);
+                session!.UpdatedAt = DateTime.Now;
+
+                _unitOfWork.SessionRepository.Update(session);
             return _unitOfWork.SaveChanges() > 0;
         }
         #endregion
