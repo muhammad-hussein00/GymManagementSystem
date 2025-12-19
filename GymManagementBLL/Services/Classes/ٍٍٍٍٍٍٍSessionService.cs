@@ -125,6 +125,12 @@ namespace GymManagementBLL.Services.Classes
                 _unitOfWork.SessionRepository.Update(session);
             return _unitOfWork.SaveChanges() > 0;
         }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
         #endregion
 
         #region Delete session
