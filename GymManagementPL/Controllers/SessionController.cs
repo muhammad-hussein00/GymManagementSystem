@@ -13,11 +13,16 @@ namespace GymManagementPL.Controllers
         {
             _sessionService = sessionService;
         }
+
+        #region Get all sessions
         public ActionResult Index()
         {
             var sessions = _sessionService.GetAllSessions();
             return View(sessions);
-        }
+        } 
+        #endregion
+
+        #region Get session deteals
         public ActionResult Details(int id)
         {
             if(id <= 0)
@@ -35,7 +40,10 @@ namespace GymManagementPL.Controllers
             }
 
             return View(sessionDetails);
-        }
+        } 
+        #endregion
+
+        #region Create session
         public ActionResult Create()
         {
             LoadDropDown();
@@ -80,7 +88,7 @@ namespace GymManagementPL.Controllers
             {
                 TempData["ErrorMessage"] = "Session not found.";
                 return RedirectToAction(nameof(Index));
-        }
+            }
 
             LoadDropDownForTrainers();
             return View(sessionToUpdate);
