@@ -93,6 +93,18 @@ namespace GymManagementBLL.Services.Classes
         }
         #endregion
 
+        #region Get session to update
+
+        public UpdateSessionViewModel? GetSessionToUpdate(int sessionId)
+        {
+            var session = _unitOfWork.SessionRepository.GetById(sessionId);
+
+            if (!IsSessionValidToUpdate(session)) return null!;
+            
+            return _mapper.Map<UpdateSessionViewModel>(session);
+        }
+        #endregion
+
         #region Update session
         public bool UpdateSession(UpdateSessionViewModel updateSessionViewModel)
         {
@@ -147,6 +159,17 @@ namespace GymManagementBLL.Services.Classes
         private bool IsValidDateTime(DateTime startDate, DateTime endDate)
         {
             return startDate < endDate && DateTime.Now > startDate;
+        private bool IsSessionValidToUpdate(Session? session)
+        {
+            if (session is null)
+                return false;
+            if (session.StartDate <= DateTime.Now)
+                return false;
+            
+            var hasActiveBookings = _unitOfWork.SessionRepository.GetCountOfBookedSlots(session.Id);
+            if(hasActiveBookings > 0) return false;
+
+            return true;
         }
         #endregion
     }
