@@ -117,6 +117,46 @@ namespace GymManagementPL.Controllers
         }
         #endregion
 
+        #region Delete session
+
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id cannot be negative or zero.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // for check session is exist
+            var session = _sessionService.GetSessionDetails(id);
+            if (session is null)
+            {
+                TempData["ErrorMessage"] = "Session not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.sessionId = id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var isDeleted = _sessionService.DeleteSession(id);
+
+            if (isDeleted)
+            {
+                TempData["SuccessMessage"] = "Session deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete the session."
+;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+
         #region Helper methods
         private void LoadDropDown()
         {
