@@ -10,7 +10,7 @@ namespace GymManagementDAL.Data.Models
     public class Member : GymUser
     {
         // JoinDate == CreatedAt
-        public string? Photo { get; set; }
+        public string Photo { get; set; } = null!;
 
         #region Relationships
 
