@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.Services.Helper_Services
 {
-    internal class AttachmentService : IAttachmentService
+    public class AttachmentService : IAttachmentService
     {
 
 

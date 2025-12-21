@@ -14,16 +14,19 @@ using GymManagementBLL.ViewModels.HealthRecordViewModels;
 using GymManagementDAL.UnitOfWork;
 using GymManagementDAL.Data.Models;
 using Member = GymManagementDAL.Data.Models.Member;
+using GymManagementBLL.Services.Helper_Services;
 
 namespace GymManagementBLL.Services.Classes
 {
     public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
-        public MemberService(IUnitOfWork unitOfWork)
+        public MemberService(IUnitOfWork unitOfWork, IAttachmentService attachmentService)
         {
             _unitOfWork = unitOfWork;
+            _attachmentService = attachmentService;
         }
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
@@ -114,6 +117,12 @@ namespace GymManagementBLL.Services.Classes
                                                          x.Phone == createMemberViewModel.Phone).Any();
             //If email is exist or phone is exist return false
             if (memberIsExist) return false;
+
+            var photoName = _attachmentService.Upload("members", createMemberViewModel.PhotoFile);
+            
+            if(string.IsNullOrEmpty(photoName))
+                return false;
+
             //Adding member
             try
             {
@@ -121,7 +130,7 @@ namespace GymManagementBLL.Services.Classes
                 {
                     Email = createMemberViewModel.Email,
                     Phone = createMemberViewModel.Phone,
-                    Photo = createMemberViewModel.Photo,
+                    Photo = photoName,
                     Gender = createMemberViewModel.Gender,
                     DateOfBirth = createMemberViewModel.DateOfBirth,
                     Name = createMemberViewModel.Name,
@@ -140,7 +149,15 @@ namespace GymManagementBLL.Services.Classes
                     }
                 };
                 _unitOfWork.GetRepository<Member>().Add(member);
-                return _unitOfWork.SaveChanges() > 0;
+                var isCreated = _unitOfWork.SaveChanges() > 0;
+
+                if (!isCreated)
+                {
+                    //Rollback
+                    _attachmentService.Delete("members", photoName);
+                    return false;
+                }
+                return isCreated;
             }
             catch
             {
@@ -186,7 +203,13 @@ namespace GymManagementBLL.Services.Classes
                     }
                 }
                 memberRepo.Delete(member);
-                return _unitOfWork.SaveChanges() > 0;
+                var isDeleted = _unitOfWork.SaveChanges() > 0;
+
+                if (isDeleted)
+                {
+                    _attachmentService.Delete("members", member.Photo);
+                }
+                return isDeleted;
             }
             catch (Exception)
             {

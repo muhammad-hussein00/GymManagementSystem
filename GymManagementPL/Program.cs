@@ -8,6 +8,7 @@ using GymManagementBLL.Services.Interfaces;
 using GymManagementBLL.Services.Classes;
 using GymManagementDAL.Models;
 using GymManagementDAL.Data.Data_seeding;
+using GymManagementBLL.Services.Helper_Services;
 
 namespace GymManagementPL
 {
@@ -33,6 +34,7 @@ namespace GymManagementPL
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
 
             /*
