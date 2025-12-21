@@ -1,4 +1,5 @@
 ﻿@model MemberToUpdateViewModel
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -10,9 +11,10 @@
                     </div>
                     <div class="card-body text-center">
                         <h2 class="mb-1 text-primary-color">@Model.Name</h2>
-                        <form method="post" asp-action="EditMember" >
-                            <input hidden readonly asp-for="Name" />
-                            <input hidden readonly asp-for="Photo" />
+                        <form asp-controller="Memeber" asp-action="EditMember" method="post">
+                            <input asp-for="Name" hidden readonly/>
+                            <input asp-for="Photo" hidden readonly/>
+
                             <div class="mt-4 text-start">
                                 <div class="row g-3">
                                     <div class="col-12">
@@ -72,5 +74,5 @@
     </div>
 </div>
 @section Scripts{
-    <partial name="_ValidationScriptsPartial.cshtml" >
+    <partial name="_ValidationScriptsPartial.cshtml" />
 }
