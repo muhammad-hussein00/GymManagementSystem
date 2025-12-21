@@ -160,9 +160,10 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "Member Not Found";
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.MemberId = id;
             return View();
         }
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed([FromForm]int id)
         {
             var memberDeleted = _memberService.DeleteMember(id);
             if (memberDeleted)
