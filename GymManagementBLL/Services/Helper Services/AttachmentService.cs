@@ -49,7 +49,7 @@ namespace GymManagementBLL.Services.Helper_Services
 
                 file.CopyTo(fileStream);
 
-                return filePath;
+                return fileName;
             }
             catch (Exception ex)
             {
